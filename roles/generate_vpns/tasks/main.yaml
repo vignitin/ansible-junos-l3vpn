@@ -3,6 +3,13 @@
 # This YAML file uses Jinja templates stored under 'roles/generate_vpns/templates' to build host-specific variables for provisioning and testing.
 # The generated files are placed in respective hostname directories under host_vars
 
+- name: Check if 'host_vars' directory is present
+  file: path=host_vars state=directory
+  run_once: true
+
+- name: Check if hostname directories are present in host_vars
+  file: path=host_vars/{{ inventory_hostname }} state=directory
+
 - name: Generate Customer VPN variables files (Used to build config)
   template: >
     src=main.conf.j2
@@ -12,15 +19,3 @@
   template: >
     src=main.conf.ceinfo.j2
     dest=host_vars/{{inventory_hostname}}/generated_neighborCE_info.yaml
-  register: result
-
-- name: Generate JSNAPy test files (Used for testing)
-  template: >
-    src=main.conf.jsnapy.j2
-    dest=tests/test_{{ item }}.yaml
-  with_items: "{{ neighborCE|map(attribute='vpn_name')|list }}"
-  when: result|success
-# - name: Generate Customer VPN variables files
-#   template: >
-#     src=main.conf2.j2
-#     dest=./pb.conf.generated_build_vpn.yaml

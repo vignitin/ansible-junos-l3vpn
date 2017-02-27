@@ -9,7 +9,6 @@ generate_vpns:
     vlan_start: 100
     interfaces_per_vpn: 5
     network_size: 30
-#    interface_name: ge-0/0/2
     sites:
         - name: HAN
           interface_name: ge-0/0/2

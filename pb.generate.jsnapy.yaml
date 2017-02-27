@@ -1,0 +1,11 @@
+---
+# pb.generate.jsnapy.yaml
+# This playbook file has 1 role:
+# roles/jsnapy: generates variables required for JSNAPy tests
+
+- name: Generate variables
+  hosts: all
+  connection: local
+  gather_facts: no
+  roles:
+    - jsnapy

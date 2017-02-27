@@ -1,7 +1,7 @@
 ---
 # pb.generate.variables.yaml
 # This playbook file has 1 role:
-# roles/generate_vpns: generates all the variables required for provisioning and testing
+# roles/generate_vpns: generates the variables required for provisioning and testing
 
 - name: Generate variables
   hosts: all
