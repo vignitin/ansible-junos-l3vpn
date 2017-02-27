@@ -1,0 +1,46 @@
+{# roles/junos_vpn/templates/main.conf.j2 #}
+{# This file uses the generated variables to build the router configuration #}
+
+{% for site in local_vpn.sites %}
+{% for vpn in site.vpns %}
+{% if vpn.vpn_name == vpn_name %}
+routing-instances {
+{# L3 Routing Instance for each vpn #}
+    {{vpn.vpn_name}} {
+        instance-type vrf;
+        route-distinguisher {{ global.asn }}:{{ vpn.vpn_id }};
+        vrf-target target:{{ global.asn }}:{{ vpn.vpn_id }};
+        vrf-table-label;
+        interface lo0.{{ vpn.vpn_id }};
+        {% for subif in vpn.subifs %}
+        interface {{site.interface}}.{{ subif.vlan_id }};
+        {% endfor %}
+    }
+}
+
+interfaces {
+{# Configuration for Loopback per VRF #}
+        lo0 {
+            unit {{ vpn.vpn_id }} {
+                family inet {
+                    address {{ vpn.lo0_ip }};
+                }
+            }
+        }
+{# Configuration for interfaces in the VRF#}
+    {% for subif in vpn.subifs %}
+        {{ site.interface }} {
+            vlan-tagging;
+            unit {{ subif.vlan_id }} {
+                description " VPN CUSTOMER {{ vpn.vpn_name }} - vlan {{ subif.vlan_id }} ";
+                vlan-id {{ subif.vlan_id }};
+                family inet {
+                    address {{ subif.ip }}/{{ subif.mask }};
+                }
+            }
+        }
+    {% endfor %}
+}
+{% endif %}
+{% endfor %}
+{% endfor %}

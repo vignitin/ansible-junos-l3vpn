@@ -1,0 +1,30 @@
+---
+# pb.check.ping.yaml
+
+- name: "Ping all L3VPN interfaces"
+  hosts: all
+  connection: local
+  gather_facts: no
+  roles:
+    - Juniper.junos
+
+  tasks:
+##################################################################
+## Ping L3VPN interfaces
+##################################################################
+
+    - name: "Ping test"
+      junos_ping:
+        host: "{{ ansible_ssh_host }}"
+        port: "{{ netconf_port }}"
+        user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass }}"
+        routing_instance: "{{ item.0.vpn_name }}"
+        dest_ip: "{{ item.1 }}"
+        ttl: 1
+        count: 1
+      with_subelements:
+          - "{{ neighborCE }}"
+          - neighbors
+      ignore_errors: True
+      register: result

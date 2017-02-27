@@ -1,0 +1,18 @@
+{# roles/generate_vpns/templates/main.conf.ceinfo.j2 #}
+{# This Jinja template is used to generate the variables used for ping testing the L3VPNs #}
+
+neighborCE:
+{% set i = 0 %}
+{% for site in generate_vpns.sites %}
+{% if inventory_hostname in site.name %}
+{% for vpn in site.vpns %}
+      - vpn_name: {{ vpn.vpn_name }}
+        neighbors:
+{% for y in range( 0, generate_vpns.interfaces_per_vpn ) %}
+{% set network = vpn.range | ipsubnet(generate_vpns.network_size, y + 1 )%}
+              - {{ network | ipaddr(2) | ipaddr('address') }}
+{% endfor %}
+{% set i = i+1 %}
+{% endfor %}
+{% endif %}
+{% endfor %}

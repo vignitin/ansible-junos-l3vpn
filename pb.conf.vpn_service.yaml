@@ -1,0 +1,7 @@
+---
+# pb.conf.vpn_service.yaml
+# This playbook combines the below 3 playbooks to initialize, build and commit VPN configuration to all routers
+
+- include: pb.init.cleanup.yaml
+- include: pb.conf.build_vpn.yaml
+- include: pb.conf.commit.yaml

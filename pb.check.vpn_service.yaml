@@ -1,0 +1,6 @@
+---
+# pb.check.vpn_service.yaml
+# This playbook will execute all the tests related to the L3VPN service
+
+  - include: pb.check.ifstatus.yaml
+  - include: pb.check.ping.yaml

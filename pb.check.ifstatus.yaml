@@ -1,0 +1,35 @@
+---
+# pb.check.ifstatus.yaml
+
+- name: Check status for all L3VPN interfaces
+  hosts: all
+  connection: local
+  gather_facts: no
+  roles:
+    - Juniper.junos
+  tasks:
+
+##################################################################
+## Check interface status
+##################################################################
+    - name: "Check Interface status (galaxy/junos_jsnapy)"
+      ignore_errors: true
+      junos_jsnapy:
+        host: "{{ ansible_ssh_host }}"
+        port: "{{ netconf_port }}"
+        user: "{{ ansible_ssh_user }}"
+        passwd: "{{ ansible_ssh_pass }}"
+        test_files: tests/test_{{ item }}.yaml
+        action: snapcheck
+      register: test1
+      with_items: "{{ neighborCE|map(attribute='vpn_name')|list }}"
+
+    # - debug:
+    #     var: test1
+    #     verbosity: 2
+
+    - name: Check JSNAPy tests results
+      assert:
+        that:
+          - "{{ item }} == 100"
+      with_items: "{{ test1.results|map(attribute='passPercentage')|list }}"

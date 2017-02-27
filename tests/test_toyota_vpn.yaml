@@ -1,0 +1,16 @@
+
+tests_include:
+  - check_int_status
+
+check_int_status:
+    - command: show interfaces terse routing-instance toyota_vpn
+
+    - iterate:
+        xpath: //interface-information/physical-interface/logical-interface
+        tests:
+          - is-equal: oper-status, up
+            info:   "Interface  {{post['name']}}  with Admin UP"
+            err: Interface  {{post['name']}}  is not UP UP
+          - is-equal: admin-status, up
+            info: "Interface  {{post['name']}}  with Admin UP"
+            err: Interface  {{post['name']}}  is not UP UP

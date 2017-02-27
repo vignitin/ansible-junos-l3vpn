@@ -1,0 +1,10 @@
+---
+# roles/build_config/defaults/main.yaml
+# This YAML file provides the variables used by roles/build_config/tasks/main.yaml
+
+tmp_dir: /tmp/build
+build_dir: "{{ tmp_dir }}/{{ inventory_hostname }}/tmp"
+junos_conf_dir: config
+junos_conf_file: "{{ inventory_hostname }}.conf"
+
+junos_conf: "{{ junos_conf_dir }}/{{ junos_conf_file }}"

@@ -1,0 +1,20 @@
+---
+# This playbook can be used to rollback the JUNOS router configuration
+
+- name: Rollback configuration
+  hosts: all
+  connection: local
+  gather_facts: no
+  vars:
+    credential:
+      host: "{{ ansible_ssh_host }}"
+      port: "{{ netconf_port }}"
+      username: "{{ ansible_ssh_user }}"
+      password: "{{ ansible_ssh_pass }}"
+
+  tasks:
+    - name: Rollback config ... please wait
+      junos_config:
+        rollback: 1
+        provider: "{{ credential }}"
+  tags: always

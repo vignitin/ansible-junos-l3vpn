@@ -1,0 +1,40 @@
+---
+# roles/generate_vpns/defaults/main.yaml
+# This is the file where the user needs to input the information for all the L3VPNs to be configured.
+# This file is used as the input to generate all the variables required to provision and test the L3VPN service.
+
+
+generate_vpns:
+    vpn_start_id: 100
+    vlan_start: 100
+    interfaces_per_vpn: 5
+    network_size: 30
+#    interface_name: ge-0/0/2
+    sites:
+        - name: HAN
+          interface_name: ge-0/0/2
+          vpns:
+            - vpn_name: toyota_vpn
+              id: 101
+              range: 30.1.1.0/24
+            - vpn_name: tesla_vpn
+              id: 102
+              range: 40.1.1.0/24
+        - name: SGN
+          interface_name: ge-0/0/3
+          vpns:
+            - vpn_name: tesla_vpn
+              id: 102
+              range: 50.1.1.0/24
+            - vpn_name: honda_vpn
+              id: 103
+              range: 60.1.1.0/24
+        - name: DAD
+          interface_name: ge-0/0/4
+          vpns:
+            - vpn_name: toyota_vpn
+              id: 101
+              range: 70.1.1.0/24
+            - vpn_name: honda_vpn
+              id: 103
+              range: 80.1.1.0/24

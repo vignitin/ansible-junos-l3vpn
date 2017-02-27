@@ -1,0 +1,18 @@
+{# roles/generate_vpns/templates/main.conf.jsnapy.j2 #}
+{# This Jinja template is used to generate the variables used for checking the status of L3VPN interfaces #}
+
+tests_include:
+  - check_int_status
+
+check_int_status:
+    - command: show interfaces terse routing-instance {{ item }}
+
+    - iterate:
+        xpath: //interface-information/physical-interface/logical-interface
+        tests:
+          - is-equal: oper-status, up
+            info:   "Interface {% raw %} {{post['name']}} {% endraw %} with Admin UP"
+            err: Interface {% raw %} {{post['name']}} {% endraw %} is not UP UP
+          - is-equal: admin-status, up
+            info: "Interface {% raw %} {{post['name']}} {% endraw %} with Admin UP"
+            err: Interface {% raw %} {{post['name']}} {% endraw %} is not UP UP

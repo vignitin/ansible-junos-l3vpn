@@ -1,0 +1,44 @@
+
+local_vpn:
+  sites:
+    - site_name: SGN
+      interface: ge-0/0/3
+      vpns:
+        - vpn_name: tesla_vpn
+          vpn_id: 102
+          lo0_ip: 50.1.1.1/32
+          subifs:
+            - vlan_id: 100
+              ip: 50.1.1.5
+              mask: 30
+            - vlan_id: 101
+              ip: 50.1.1.9
+              mask: 30
+            - vlan_id: 102
+              ip: 50.1.1.13
+              mask: 30
+            - vlan_id: 103
+              ip: 50.1.1.17
+              mask: 30
+            - vlan_id: 104
+              ip: 50.1.1.21
+              mask: 30
+        - vpn_name: honda_vpn
+          vpn_id: 103
+          lo0_ip: 60.1.1.1/32
+          subifs:
+            - vlan_id: 105
+              ip: 60.1.1.5
+              mask: 30
+            - vlan_id: 106
+              ip: 60.1.1.9
+              mask: 30
+            - vlan_id: 107
+              ip: 60.1.1.13
+              mask: 30
+            - vlan_id: 108
+              ip: 60.1.1.17
+              mask: 30
+            - vlan_id: 109
+              ip: 60.1.1.21
+              mask: 30

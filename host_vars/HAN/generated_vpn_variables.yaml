@@ -1,0 +1,44 @@
+
+local_vpn:
+  sites:
+    - site_name: HAN
+      interface: ge-0/0/2
+      vpns:
+        - vpn_name: toyota_vpn
+          vpn_id: 101
+          lo0_ip: 30.1.1.1/32
+          subifs:
+            - vlan_id: 100
+              ip: 30.1.1.5
+              mask: 30
+            - vlan_id: 101
+              ip: 30.1.1.9
+              mask: 30
+            - vlan_id: 102
+              ip: 30.1.1.13
+              mask: 30
+            - vlan_id: 103
+              ip: 30.1.1.17
+              mask: 30
+            - vlan_id: 104
+              ip: 30.1.1.21
+              mask: 30
+        - vpn_name: tesla_vpn
+          vpn_id: 102
+          lo0_ip: 40.1.1.1/32
+          subifs:
+            - vlan_id: 105
+              ip: 40.1.1.5
+              mask: 30
+            - vlan_id: 106
+              ip: 40.1.1.9
+              mask: 30
+            - vlan_id: 107
+              ip: 40.1.1.13
+              mask: 30
+            - vlan_id: 108
+              ip: 40.1.1.17
+              mask: 30
+            - vlan_id: 109
+              ip: 40.1.1.21
+              mask: 30

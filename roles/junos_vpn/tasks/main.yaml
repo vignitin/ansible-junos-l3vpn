@@ -1,0 +1,8 @@
+---
+# roles/junos_vpn/tasks/main.yaml
+# This YAML file builds the router config parts using the Jinja template under roles/junos_vpn/templates/main.conf.j2
+
+- name: Building VPN configuration
+  template: >
+    src=main.conf.j2
+    dest={{ build_dir }}/junos-vpn.{{ vpn_name }}.conf.part

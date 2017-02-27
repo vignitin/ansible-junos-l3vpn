@@ -1,0 +1,41 @@
+---
+# pb.conf.build_vpn.yaml
+# This playbook has 2 roles:
+#   - roles/junos_vpn: generates parts of the router config and places them in the temporary build directory
+#   - roles/build_config: aggregates various config parts to generate a single config for each router and places it in playbooks/config directory
+
+- name: Create and apply configuration for Toyota VPN
+  hosts: toyota_vpn
+  connection: local
+  gather_facts: no
+  vars:
+    vpn_name: toyota_vpn
+    vpn_id: 102
+  roles:
+    - junos_vpn
+    - build_config
+  tags: toyota_vpn
+
+- name: Create and apply configuration for Tesla VPN
+  hosts: tesla_vpn
+  connection: local
+  gather_facts: no
+  vars:
+    vpn_name: tesla_vpn
+    vpn_id: 101
+  roles:
+    - junos_vpn
+    - build_config
+  tags: tesla_vpn
+
+- name: Create and apply configuration for Honda VPN
+  hosts: honda_vpn
+  connection: local
+  gather_facts: no
+  vars:
+    vpn_name: honda_vpn
+    vpn_id: 103
+  roles:
+    - junos_vpn
+    - build_config
+  tags: honda_vpn

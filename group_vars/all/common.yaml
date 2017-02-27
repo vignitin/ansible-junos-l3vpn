@@ -1,0 +1,13 @@
+# group_vars/all/common.yaml
+# This YAML file defines variables that are applicable to all groups
+
+
+# System variable used to define temporary directory
+# please update tmp_dir variable if needed
+tmp_dir: /tmp/build
+build_dir: "{{ tmp_dir }}/{{ inventory_hostname }}/tmp"
+junos_conf: "config/{{ inventory_hostname }}.conf"
+
+## Global parameters
+global:
+  asn: 65532

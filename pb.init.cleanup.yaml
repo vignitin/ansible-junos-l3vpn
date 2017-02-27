@@ -1,0 +1,14 @@
+---
+# pb.init.cleanup.yaml
+# This playbook is used to create the temporary directories to store config parts
+
+- name: Creating build directories for each host
+  hosts: all
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: remove host build temp directory
+      file: path={{ build_dir }} state=absent
+    - name: create host build temp directory
+      file: path={{ build_dir }} state=directory
+  tags: always
