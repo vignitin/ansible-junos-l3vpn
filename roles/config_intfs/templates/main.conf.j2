@@ -1,0 +1,34 @@
+{# roles/config_intfs/templates/main.conf.j2 #}
+
+{# STEP 1: set hostname #}
+system {
+    host-name {{ inventory_hostname }};
+}
+
+interfaces {
+{# STEP 2: Configure interfaces, undertstand the use of if statement in Jinja2 #}
+{% for int in system %}
+    {{ int.interface }} {
+      {% if int.vlanid is defined %}
+        vlan-tagging;
+        unit {{ int.vlanid }} {
+            vlan-id {{ int.vlanid }};
+      {% else %}
+        unit 0 {
+      {% endif %}
+            description "{{ int.description }}";
+    {% if int.family is defined %}
+        {% for proto in int.family %}
+            {% if proto.address is defined  %}
+            family {{ proto.type }} {
+                address {{ proto.address }};
+            }
+            {% else  %}
+            family {{ proto.type }};
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+        }
+    }
+{% endfor %}
+}

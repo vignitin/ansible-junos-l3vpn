@@ -1,0 +1,11 @@
+---
+# pb.conf.base_config.yaml
+
+- name: Create base configuration for all routers
+  hosts: all
+  connection: local
+  gather_facts: no
+  roles:
+    - config_intfs
+    - config_protocols
+    - config_build

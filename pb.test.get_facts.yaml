@@ -1,0 +1,98 @@
+---
+- name: Get Device Facts
+  hosts: HAN
+  connection: local
+  gather_facts: no
+  vars:
+    credential:
+      host: "{{ ansible_ssh_host }}"
+      port: "{{ netconf_port }}"
+      username: "{{ ansible_ssh_user }}"
+      password: "{{ ansible_ssh_pass }}"
+
+  tasks:
+  - name: Checking NETCONF connectivity
+    wait_for: host={{ ansible_ssh_host }} port={{ netconf_port }} timeout=5
+
+### Example 1: Get facts (with debug msg & debug var)
+  # - name: Retrieve information from devices running Junos OS
+  #   junos_facts:
+  #     host: "{{ ansible_ssh_host }}"
+  #     provider: "{{ credential }}"
+  #     config: no
+  #   # register: junos
+  #
+  # - name: Show version
+  #   debug: msg="Router {{ inventory_hostname }} is running {{ version }}"
+  #   # debug:
+  #   #   var: junos.ansible_facts.version
+
+### Example 2: Get facts (with debug msg & debug var)
+  # - name: Collect device Facts and Configuration in XML
+  #   junos_facts:
+  #     config: yes
+  #     config_format: xml
+  #     provider: "{{ credential }}"
+  #   register: result
+  #
+  # - name: Configuration in JSON (converted from XML)
+  #   debug: var=result.ansible_facts.config_json
+  #
+  # # - name: Configuration in XML
+  # #   debug: var=result.ansible_facts.config
+
+
+
+### Example 3a: Show interface
+  # - name: run show version on remote devices
+  #   junos_command:
+  #     host: "{{ ansible_ssh_host }}"
+  #     provider: "{{ credential }}"
+  #     commands: "show interface terse ge-0/0/*"
+  #   register: junos
+  #
+  # - name: Show interfaces
+  #   debug:
+  #     var: junos.stdout[0]['interface-information']['physical-interface']['logical-interface']
+
+### Example 3b: Show details for ge-0/0/0 if oper-status is Up
+  # - name: run show version on remote devices
+  #   junos_command:
+  #     host: "{{ ansible_ssh_host }}"
+  #     provider: "{{ credential }}"
+  #     commands: "show interface terse ge-0/0/*"
+  #   register: junos
+  #
+  # - name: Show interfaces
+  #   debug: var=item
+  #   with_items: "{{junos.stdout[0]['interface-information']['physical-interface']}}"
+  #   when: (item['oper-status'] == 'up') and (item['name'] == 'ge-0/0/0')
+
+### Example 3c: Show all interface names only
+  # - name: run show version on remote devices
+  #   junos_command:
+  #     host: "{{ ansible_ssh_host }}"
+  #     provider: "{{ credential }}"
+  #     commands: "show interface terse ge-0/0/*"
+  #   register: junos
+  #
+  # - name: Show interfaces
+  #   debug: var=item
+  #   with_items: "{{junos.stdout[0]['interface-information']['physical-interface'] | map(attribute='name') | list }}"
+  #
+
+### Example 3d: Show all interface names and their operational status (or only 'when' they are up & ge-0/0/0)
+  # - name: run show version on remote devices
+  #   junos_command:
+  #     host: "{{ ansible_ssh_host }}"
+  #     provider: "{{ credential }}"
+  #     commands: "show interface terse ge-0/0/*"
+  #   register: junos
+  #
+  # - name: Show interfaces
+  #   debug: msg="Interface {{ item.0 }} Operational status is {{ item.1}}"
+  #   # debug: var=item
+  #   with_together:
+  #     - "{{junos.stdout[0]['interface-information']['physical-interface'] | map(attribute='name') | list }}"
+  #     - "{{junos.stdout[0]['interface-information']['physical-interface'] | map(attribute='oper-status') | list }}"
+  #   when: (item.1 == 'up') and (item.0 == 'ge-0/0/0')

@@ -11,3 +11,4 @@ junos_conf: "config/{{ inventory_hostname }}.conf"
 ## Global parameters
 global:
   asn: 65532
+  rrloopback: 6.6.6.6

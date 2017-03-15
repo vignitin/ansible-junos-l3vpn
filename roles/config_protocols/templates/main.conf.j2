@@ -1,0 +1,55 @@
+{# roles/config_protocols/templates/main.conf.j2 #}
+
+routing-options {
+    router-id {{ loopback_ip }};
+    autonomous-system {{ global.asn }};
+}
+protocols {
+  isis {
+      level 2 wide-metrics-only;
+      level 1 disable;
+      interface lo0.0 {
+        passive;
+      }
+  }
+  ldp {
+      track-igp-metric;
+      deaggregate;
+      interface lo0.0;
+  }
+  bgp {
+      group MP-iBGP {
+          type internal;
+          local-address {{ loopback_ip }};
+          family inet {
+              unicast;
+          }
+          family inet-vpn {
+              unicast;
+          }
+        {% for peers in protocols.bgppeers %}
+          neighbor {{ peers }};
+        {% endfor %}
+
+      }
+  }
+
+{% for int in system %}
+  {% if int.interface != "lo0" %}
+    rsvp {
+        interface {{ int.interface }}.{{ int.vlanid }};
+    }
+    mpls {
+      interface {{ int.interface }}.{{ int.vlanid }};
+    }
+    isis {
+      interface {{ int.interface }}.{{ int.vlanid }} {
+        level 1 disable;
+      }
+    }
+    ldp {
+      interface {{ int.interface }}.{{ int.vlanid }};
+    }
+  {% endif %}
+{% endfor %}
+}

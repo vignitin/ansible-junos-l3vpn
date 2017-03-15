@@ -8,4 +8,4 @@
   connection: local
   gather_facts: no
   roles:
-    - jsnapy
+    - test_jsnapy
