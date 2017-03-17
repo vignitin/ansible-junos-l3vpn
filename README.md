@@ -5,7 +5,7 @@ This repo has a project to demonstrate configuring L3VPN on JUNOS routers using 
 The attached PPT file 'APRICOT_2017-Automating_L3VPNs_with_Ansible-Nitin_Vig_v1.1.pptx' has details on the topology.
 
 Steps:
-<b>1) Gather facts:<b><br>
+<b>1) Gather facts:</b><br>
 To get facts from the JUNOS routers, run the 'pb.test.get_facts.yaml' playbook. Un-hash the examples in the file to test them.
 
 2) Initial a temporary directory to store configs:
